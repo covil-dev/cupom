@@ -38,19 +38,30 @@
           Botão de alimentação (somente integração visual + clique).
           Nesta etapa ele apenas dispara a animação manual de comer.
         -->
-        <button
-          id="feedButton"
-          class="feed-button"
-          type="button"
-          aria-label="Alimentar cachorro"
-        >
-          <img
-            class="feed-button-icon"
-            src="./assets/icons/bt-alimenta.png"
-            alt=""
-            aria-hidden="true"
-          />
-        </button>
+        <div class="feed-control">
+          <output
+            id="feedBalance"
+            class="feed-balance"
+            aria-live="polite"
+            aria-label="Saldo para alimentar"
+          >
+            600
+          </output>
+
+          <button
+            id="feedButton"
+            class="feed-button"
+            type="button"
+            aria-label="Alimentar cachorro"
+          >
+            <img
+              class="feed-button-icon"
+              src="./assets/icons/bt-alimenta.png"
+              alt=""
+              aria-hidden="true"
+            />
+          </button>
+        </div>
 
         <!--
           Container reservado para futuras mecânicas (botões, corações, progresso etc.).
@@ -61,6 +72,7 @@
     </section>
   </main>
 
+  <script src="./js/dog-animation.js"></script>
   <script src="./js/app.js"></script>
 </body>
 </html>
