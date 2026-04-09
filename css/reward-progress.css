@@ -1,0 +1,144 @@
+.top-panel {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: 320px;
+  height: 160px;
+  transform: translateX(-50%);
+  background: #ffffff;
+  border-radius: 24px;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  padding: 0 18px;
+}
+
+.top-panel-section {
+  min-height: 0;
+}
+
+.top-panel-progress {
+  display: grid;
+  place-items: center;
+}
+
+.top-panel-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
+.reward-progress {
+  width: 100%;
+  height: 50px;
+  position: relative;
+}
+
+.reward-progress-icon {
+  position: absolute;
+  top: 16px;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  object-fit: contain;
+  z-index: 2;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.reward-progress-icon-start {
+  left: 0;
+}
+
+.reward-progress-icon-end {
+  right: 0;
+}
+
+.reward-progress-track {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 7px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid #f0d9d9;
+  background: #fff6f6;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.reward-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff6b8d 0%, #ff9a7d 100%);
+}
+
+.reward-progress-markers {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 7px;
+  height: 18px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.reward-marker {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reward-marker-60 {
+  left: 60%;
+}
+
+.reward-marker-80 {
+  left: 80%;
+}
+
+.reward-marker-dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 3px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(208, 125, 146, 0.45);
+}
+
+.reward-marker-secret-icon {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 2px;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.reward-marker-label {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 800;
+  color: #000000;
+}
+
+.reward-progress-message {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12pt;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #000000;
+}

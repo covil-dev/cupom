@@ -23,34 +23,63 @@
           </div>
         </div>
         <div class="top-panel">
-          <div class="reward-progress" aria-label="Barra de progresso de recompensa">
-            <img
-              class="reward-progress-icon reward-progress-icon-start"
-              src="./assets/icons/ic-coracao.png"
-              alt="Início do progresso"
-            />
+          <div class="top-panel-section top-panel-header" aria-hidden="true"></div>
 
-            <div
-              class="reward-progress-track"
-              id="rewardProgress"
-              role="progressbar"
-              aria-label="Progresso de recompensa"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              aria-valuenow="0"
-            >
+          <div class="top-panel-section top-panel-progress">
+            <div class="reward-progress" aria-label="Barra de progresso de recompensa">
+              <img
+                class="reward-progress-icon reward-progress-icon-start"
+                src="./assets/icons/ic-coracao.png"
+                alt="Início do progresso"
+              />
+
               <div
-                class="reward-progress-fill"
-                id="rewardProgressFill"
-                style="width: 0%;"
-              ></div>
-            </div>
+                class="reward-progress-track"
+                id="rewardProgress"
+                role="progressbar"
+                aria-label="Progresso de recompensa"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <div
+                  class="reward-progress-fill"
+                  id="rewardProgressFill"
+                  style="width: 0%;"
+                ></div>
+              </div>
 
-            <img
-              class="reward-progress-icon reward-progress-icon-end"
-              src="./assets/icons/ic-presente.png"
-              alt="Fim do progresso"
-            />
+              <div class="reward-progress-markers" aria-hidden="true">
+                <div class="reward-marker reward-marker-60">
+                  <img
+                    class="reward-marker-secret-icon"
+                    src="./assets/icons/ic-segredo.png"
+                    alt=""
+                  />
+                  <span class="reward-marker-dot"></span>
+                  <span class="reward-marker-label">60%</span>
+                </div>
+                <div class="reward-marker reward-marker-80">
+                  <img
+                    class="reward-marker-secret-icon"
+                    src="./assets/icons/ic-segredo.png"
+                    alt=""
+                  />
+                  <span class="reward-marker-dot"></span>
+                  <span class="reward-marker-label">80%</span>
+                </div>
+              </div>
+
+              <img
+                class="reward-progress-icon reward-progress-icon-end"
+                src="./assets/icons/ic-presente.png"
+                alt="Fim do progresso"
+              />
+            </div>
+          </div>
+
+          <div class="top-panel-section top-panel-footer">
+            <p class="reward-progress-message">Faltam apenas alguns corações para ganhar!</p>
           </div>
         </div>
 
