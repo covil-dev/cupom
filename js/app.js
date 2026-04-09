@@ -1,44 +1,60 @@
 function bootApp() {
   const dogModule = globalThis.DogAnimationModule;
+  const feedModule = globalThis.FeedButtonModule;
+  const dropModule = globalThis.DropButtonModule;
   const FEED_COST = 150;
-  const INITIAL_FEED_BALANCE = 600;
+  const INITIAL_GLOBAL_RATION_BALANCE = 600;
+  const DROP_REWARD_AMOUNT = 150;
+  const DROP_REWARD_INTERVAL_MS = 10000;
 
-  if (!dogModule || typeof dogModule.createDogAnimation !== "function") {
-    console.error("DogAnimationModule nao foi carregado.");
+  if (
+    !dogModule ||
+    typeof dogModule.createDogAnimation !== "function" ||
+    !feedModule ||
+    typeof feedModule.createFeedButtonController !== "function" ||
+    !dropModule ||
+    typeof dropModule.createDropButtonController !== "function"
+  ) {
+    console.error("Modulos principais da aplicacao nao foram carregados.");
     return;
   }
 
   const dogSprite = document.getElementById("dogSprite");
   const feedButton = document.getElementById("feedButton");
-  const feedBalance = document.getElementById("feedBalance");
+  const globalRationBalance = document.getElementById("globalRationBalance");
+  const dropButton = document.getElementById("dropButton");
+  const dropBalance = document.getElementById("dropBalance");
+  const dropGainFeedback = document.getElementById("dropGainFeedback");
 
-  if (!dogSprite || !feedBalance) {
+  if (
+    !dogSprite ||
+    !feedButton ||
+    !globalRationBalance ||
+    !dropButton ||
+    !dropBalance ||
+    !dropGainFeedback
+  ) {
     console.error("Elementos da interface do cachorro nao foram encontrados.");
     return;
   }
 
   const { animator, config, timelineIndexes } = dogModule.createDogAnimation(dogSprite);
   const state = {
-    feedBalance: INITIAL_FEED_BALANCE,
+    globalRationBalance: INITIAL_GLOBAL_RATION_BALANCE,
     pendingFeedCost: 0
   };
 
-  animator.start();
-
   function getAvailableFeedBalance() {
-    return state.feedBalance - state.pendingFeedCost;
+    return state.globalRationBalance - state.pendingFeedCost;
   }
 
   function canAffordFeed() {
     return getAvailableFeedBalance() >= FEED_COST;
   }
 
-  function renderFeedBalance() {
-    feedBalance.textContent = String(state.feedBalance);
-
-    if (feedButton) {
-      feedButton.disabled = !canAffordFeed();
-    }
+  function renderGlobalRationBalance() {
+    globalThis.rationBalance = state.globalRationBalance;
+    feedController.render();
   }
 
   function queueFeed() {
@@ -48,9 +64,28 @@ function bootApp() {
 
     state.pendingFeedCost += FEED_COST;
     animator.enqueueManual("eat", { priority: true });
-    renderFeedBalance();
     return true;
   }
+
+  const feedController = feedModule.createFeedButtonController({
+    feedButton,
+    feedBalanceOutput: globalRationBalance,
+    getTotalBalance: () => state.globalRationBalance,
+    canAffordFeed: () => canAffordFeed(),
+    onRequestFeed: queueFeed
+  });
+
+  const dropController = dropModule.createDropButtonController({
+    dropButton,
+    dropBalanceOutput: dropBalance,
+    dropGainFeedback,
+    rewardAmount: DROP_REWARD_AMOUNT,
+    rewardIntervalMs: DROP_REWARD_INTERVAL_MS,
+    onRewardCollected: (rewardAmount) => {
+      state.globalRationBalance += rewardAmount;
+      renderGlobalRationBalance();
+    }
+  });
 
   function setupFeedStateSync() {
     animator.on("manual-sequence-start", ({ sequenceName }) => {
@@ -59,19 +94,15 @@ function bootApp() {
       }
 
       state.pendingFeedCost -= FEED_COST;
-      state.feedBalance -= FEED_COST;
-      renderFeedBalance();
+      state.globalRationBalance -= FEED_COST;
+      renderGlobalRationBalance();
     });
   }
 
-  function setupFeedButton() {
-    if (!feedButton) {
-      return;
-    }
-
-    feedButton.addEventListener("click", () => {
-      queueFeed();
-    });
+  function setupControls() {
+    feedController.mount();
+    dropController.mount();
+    dropController.startAccumulator();
   }
 
   function setupDogClick() {
@@ -121,7 +152,7 @@ function bootApp() {
 
       if (key === "1") animator.autoIndex = timelineIndexes.tail;
       if (key === "2") animator.autoIndex = timelineIndexes.stand;
-      if (key === "e") queueFeed();
+      if (key === "e") feedController.requestFeed();
       if (key === "c") animator.enqueueManual("chokeSpit");
 
       if (key === "s") {
@@ -139,19 +170,22 @@ function bootApp() {
     renderDebugInfo();
   }
 
+  animator.start();
   setupFeedStateSync();
-  renderFeedBalance();
-  setupFeedButton();
+  setupControls();
+  renderGlobalRationBalance();
   setupDogClick();
   setupDebugMode();
 
   globalThis.dogAnimation = {
     start: () => animator.start(),
     stop: () => animator.stop(),
-    triggerEat: () => queueFeed(),
+    triggerEat: () => feedController.requestFeed(),
     triggerStand: () => animator.enqueueManual("stand", { priority: true }),
     triggerChokeSpit: () => animator.enqueueManual("chokeSpit"),
-    getFeedBalance: () => state.feedBalance,
+    collectDropReward: () => dropController.collectReward(),
+    getFeedBalance: () => state.globalRationBalance,
+    getDropBalance: () => dropController.getBalance(),
     playTailAuto: () => (animator.autoIndex = timelineIndexes.tail),
     playOpaAuto: () => (animator.autoIndex = timelineIndexes.opa),
     playTongueAuto: () => (animator.autoIndex = timelineIndexes.tongue),

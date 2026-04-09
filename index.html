@@ -38,12 +38,45 @@
           Botão de alimentação (somente integração visual + clique).
           Nesta etapa ele apenas dispara a animação manual de comer.
         -->
+        <div class="drop-control">
+          <div
+            id="dropGainFeedback"
+            class="drop-gain-feedback"
+            aria-hidden="true"
+          >
+            +150
+          </div>
+
+          <output
+            id="dropBalance"
+            class="drop-balance"
+            aria-live="polite"
+            aria-label="Recompensa acumulada"
+          >
+            0
+          </output>
+
+          <button
+            id="dropButton"
+            class="drop-button"
+            type="button"
+            aria-label="Coletar recompensa de ração"
+          >
+            <img
+              class="drop-button-icon"
+              src="./assets/icons/bt-dropa.png"
+              alt=""
+              aria-hidden="true"
+            />
+          </button>
+        </div>
+
         <div class="feed-control">
           <output
-            id="feedBalance"
+            id="globalRationBalance"
             class="feed-balance"
             aria-live="polite"
-            aria-label="Saldo para alimentar"
+            aria-label="Saldo global de ração"
           >
             600
           </output>
@@ -73,6 +106,8 @@
   </main>
 
   <script src="./js/dog-animation.js"></script>
+  <script src="./js/feed-button.js"></script>
+  <script src="./js/drop-button.js"></script>
   <script src="./js/app.js"></script>
 </body>
 </html>
