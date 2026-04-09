@@ -22,6 +22,37 @@
             />
           </div>
         </div>
+        <div class="top-panel">
+          <div class="reward-progress" aria-label="Barra de progresso de recompensa">
+            <img
+              class="reward-progress-icon reward-progress-icon-start"
+              src="./assets/icons/ic-coracao.png"
+              alt="Início do progresso"
+            />
+
+            <div
+              class="reward-progress-track"
+              id="rewardProgress"
+              role="progressbar"
+              aria-label="Progresso de recompensa"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div
+                class="reward-progress-fill"
+                id="rewardProgressFill"
+                style="width: 0%;"
+              ></div>
+            </div>
+
+            <img
+              class="reward-progress-icon reward-progress-icon-end"
+              src="./assets/icons/ic-presente.png"
+              alt="Fim do progresso"
+            />
+          </div>
+        </div>
 
         <div class="drop-control">
           <div
