@@ -185,6 +185,12 @@
   border-radius: 50%;
   background: #ffffff;
   box-shadow: 0 0 0 1px rgba(208, 125, 146, 0.45);
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.reward-marker.is-reached .reward-marker-dot {
+  background: #ef4444;
+  box-shadow: 0 0 0 1px rgba(170, 16, 16, 0.55);
 }
 
 .reward-marker-secret-icon {

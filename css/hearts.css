@@ -1,0 +1,154 @@
+.hearts-layer {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  width: var(--heart-area-width, 56%);
+  height: var(--heart-area-height, 122px);
+  margin-bottom: var(--heart-area-offset, 12px);
+  --heart-idle-duration: 5200ms;
+  --heart-idle-shift: 1.8px;
+  --heart-idle-tilt: 1.8deg;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.heart-token {
+  position: absolute;
+  width: var(--heart-size, 52px);
+  height: var(--heart-size, 52px);
+  left: 0;
+  top: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: default;
+}
+
+.heart-token[disabled] {
+  cursor: default;
+}
+
+.heart-token-visual {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scale(1);
+  opacity: 1;
+  will-change: transform, opacity, filter;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.26));
+  animation: heartIdleSway var(--heart-idle-duration, 5200ms) ease-in-out infinite;
+}
+
+.heart-token-layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.heart-token-layer-dim {
+  opacity: var(--heart-dim-opacity, 0.4);
+}
+
+.heart-token-layer-fill {
+  opacity: 1;
+  clip-path: inset(0 calc((1 - var(--heart-fill-ratio, 0)) * 100%) 0 0);
+}
+
+.heart-token.is-spawning .heart-token-visual {
+  animation:
+    heartSpawn var(--heart-spawn-duration, 340ms) cubic-bezier(0.22, 0.9, 0.22, 1) both,
+    heartIdleSway var(--heart-idle-duration, 5200ms) ease-in-out infinite;
+}
+
+.heart-token.is-ready {
+  cursor: pointer;
+}
+
+.heart-token.is-ready .heart-token-visual {
+  animation:
+    heartReadyBlink var(--heart-ready-duration, 1400ms) ease-in-out infinite,
+    heartIdleSway var(--heart-idle-duration, 5200ms) ease-in-out infinite;
+}
+
+.heart-token.is-consuming .heart-token-visual {
+  animation: heartConsume var(--heart-consume-duration, 240ms) ease-out forwards;
+}
+
+@keyframes heartSpawn {
+  0% {
+    transform: scale(0.45);
+    opacity: 0;
+  }
+  62% {
+    transform: scale(1.14);
+    opacity: 1;
+    filter: brightness(1.32) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.24));
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.26));
+  }
+}
+
+@keyframes heartIdleSway {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(var(--heart-idle-shift, 1.8px), calc(var(--heart-idle-shift, 1.8px) * -0.5))
+      rotate(var(--heart-idle-tilt, 1.8deg));
+  }
+  50% {
+    transform: translate(calc(var(--heart-idle-shift, 1.8px) * -0.65), var(--heart-idle-shift, 1.8px))
+      rotate(calc(var(--heart-idle-tilt, 1.8deg) * -0.8));
+  }
+  75% {
+    transform: translate(calc(var(--heart-idle-shift, 1.8px) * 0.55), calc(var(--heart-idle-shift, 1.8px) * 0.6))
+      rotate(calc(var(--heart-idle-tilt, 1.8deg) * 0.5));
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes heartReadyBlink {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.26));
+  }
+  74% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.26));
+  }
+  82% {
+    opacity: 0.72;
+    transform: scale(1.05);
+    filter: brightness(1.26) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.22));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.26));
+  }
+}
+
+@keyframes heartConsume {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.38);
+    opacity: 0;
+  }
+}
