@@ -1,20 +1,25 @@
-﻿/* Tela e camada de fundo */
+﻿/* Scene viewport and background composition */
 .game-shell {
-  width: var(--screen-width);
-  aspect-ratio: var(--screen-ratio);
-  max-height: 94vh;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: var(--screen-shadow);
   position: relative;
-  background: #000;
+  width: 100%;
+  min-height: 100vh;
 }
 
 .game-screen {
-  width: 100%;
-  height: 100%;
   position: relative;
+  width: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  --control-size: clamp(88px, 24vw, 126px);
   isolation: isolate;
+  overflow: hidden;
+  background: #000;
+}
+
+.scene-reference {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .screen-background {
@@ -22,7 +27,7 @@
   inset: 0;
   background-image: url("../assets/background/fundo.png");
   background-size: cover;
-  background-position: center;
+  background-position: center bottom;
   background-repeat: no-repeat;
 }
 
@@ -32,9 +37,35 @@
   pointer-events: none;
 }
 
-@media (max-height: 720px) {
+@supports (height: 100dvh) {
+  .game-shell,
+  .game-screen {
+    min-height: 100dvh;
+    height: 100dvh;
+  }
+}
+
+@media (min-width: 900px) {
   .game-shell {
-    width: min(97vw, 360px);
-    border-radius: 18px;
+    width: min(430px, 100%);
+    height: min(95vh, 860px);
+    min-height: 0;
+    margin-inline: auto;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--desktop-preview-shadow);
+  }
+
+  .game-screen {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+@supports (height: 100dvh) {
+  @media (min-width: 900px) {
+    .game-shell {
+      height: min(95dvh, 860px);
+    }
   }
 }

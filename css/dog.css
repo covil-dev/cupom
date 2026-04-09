@@ -1,15 +1,16 @@
-﻿/* Camada central de destaque do cachorro */
+﻿/* Dog anchored to the scene composition */
 .dog-stage {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: end center;
-  padding-bottom: 70px;
+  left: 50%;
+  bottom: 40px;
+  width: clamp(210px, 52%, 340px);
+  transform: translateX(-50%);
+  z-index: 4;
 }
 
 .dog-sprite {
-  width: clamp(204px, 66%, 312px);
-  max-height: 70%;
+  width: 100%;
+  height: auto;
   object-fit: contain;
   filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.28));
   user-select: none;

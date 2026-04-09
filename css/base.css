@@ -1,8 +1,14 @@
 ﻿:root {
-  --page-bg: #f2f5f8;
-  --screen-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
-  --screen-width: min(96vw, 430px);
-  --screen-ratio: 9 / 16;
+  --scene-width: 1156;
+  --scene-height: 2072;
+  --scene-ratio: calc(var(--scene-width) / var(--scene-height));
+  --page-bg: #05070b;
+  --desktop-preview-bg: radial-gradient(circle at top, #1e2e4a 0%, #0b121f 52%, #05070b 100%);
+  --desktop-preview-shadow: 0 24px 56px rgba(0, 0, 0, 0.38);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
 }
 
 * {
@@ -13,25 +19,37 @@ html,
 body {
   margin: 0;
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: radial-gradient(circle at top, #ffffff 0%, var(--page-bg) 55%, #e8edf2 100%);
+  background: var(--page-bg);
 }
 
 body {
-  display: grid;
-  place-items: center;
-  padding: 24px;
+  overflow: hidden;
 }
 
 .app-wrapper {
   width: 100%;
-  display: grid;
-  place-items: center;
+  min-height: 100vh;
 }
 
-@media (max-height: 720px) {
+@supports (height: 100dvh) {
+  html,
+  body,
+  .app-wrapper {
+    min-height: 100dvh;
+  }
+}
+
+@media (min-width: 900px) {
   body {
-    padding: 14px;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: var(--desktop-preview-bg);
+  }
+
+  .app-wrapper {
+    min-height: auto;
   }
 }

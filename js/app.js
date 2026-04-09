@@ -1,3 +1,53 @@
+function setupSceneReferenceLayout() {
+  const gameScreen = document.getElementById("gameScreen");
+  const sceneReference = document.getElementById("sceneReference");
+  const SCENE_WIDTH = 1156;
+  const SCENE_HEIGHT = 2072;
+
+  if (!gameScreen || !sceneReference) {
+    return;
+  }
+
+  let frameRequestId = null;
+
+  const applySceneBounds = () => {
+    frameRequestId = null;
+    const { width: screenWidth, height: screenHeight } = gameScreen.getBoundingClientRect();
+
+    if (screenWidth <= 0 || screenHeight <= 0) {
+      return;
+    }
+
+    const coverScale = Math.max(screenWidth / SCENE_WIDTH, screenHeight / SCENE_HEIGHT);
+    const renderedWidth = Math.round(SCENE_WIDTH * coverScale);
+    const renderedHeight = Math.round(SCENE_HEIGHT * coverScale);
+    const offsetLeft = Math.round((screenWidth - renderedWidth) / 2);
+    const offsetTop = Math.round(screenHeight - renderedHeight);
+
+    sceneReference.style.width = `${renderedWidth}px`;
+    sceneReference.style.height = `${renderedHeight}px`;
+    sceneReference.style.left = `${offsetLeft}px`;
+    sceneReference.style.top = `${offsetTop}px`;
+  };
+
+  const requestSceneBoundsUpdate = () => {
+    if (frameRequestId !== null) {
+      return;
+    }
+
+    frameRequestId = window.requestAnimationFrame(applySceneBounds);
+  };
+
+  if (typeof ResizeObserver === "function") {
+    const observer = new ResizeObserver(requestSceneBoundsUpdate);
+    observer.observe(gameScreen);
+  }
+
+  window.addEventListener("resize", requestSceneBoundsUpdate, { passive: true });
+  window.addEventListener("orientationchange", requestSceneBoundsUpdate, { passive: true });
+  requestSceneBoundsUpdate();
+}
+
 function bootApp() {
   const dogModule = globalThis.DogAnimationModule;
   const feedModule = globalThis.FeedButtonModule;
@@ -18,6 +68,8 @@ function bootApp() {
     console.error("Modulos principais da aplicacao nao foram carregados.");
     return;
   }
+
+  setupSceneReferenceLayout();
 
   const dogSprite = document.getElementById("dogSprite");
   const feedButton = document.getElementById("feedButton");

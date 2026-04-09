@@ -8,36 +8,21 @@
 </head>
 <body>
   <main class="app-wrapper">
-    <!--
-      Estrutura principal do jogo, centralizada e com foco em layout vertical.
-      O conteúdo interno pode crescer depois (botões, HUD, barra etc.).
-    -->
     <section class="game-shell" aria-label="Área principal do minigame">
-
-      <!--
-        Área principal onde o jogo é renderizado.
-        O fundo usa sua imagem e o cachorro fica em destaque na camada superior.
-      -->
       <div class="game-screen" id="gameScreen">
-        <div class="screen-background" aria-hidden="true"></div>
+        <div class="scene-reference" id="sceneReference">
+          <div class="screen-background" aria-hidden="true"></div>
 
-        <div class="dog-stage" aria-label="Área de animação do cachorro">
-          <!--
-            O src inicial é substituído pelo JavaScript com base no array de poses.
-            Troque os caminhos no app.js pelos arquivos reais do cachorro.
-          -->
-          <img
-            id="dogSprite"
-            class="dog-sprite"
-            src="./assets/dog/padrao.png"
-            alt="Cachorrinho animado"
-          />
+          <div class="dog-stage" aria-label="Área de animação do cachorro">
+            <img
+              id="dogSprite"
+              class="dog-sprite"
+              src="./assets/dog/padrao.png"
+              alt="Cachorrinho animado"
+            />
+          </div>
         </div>
 
-        <!--
-          Botão de alimentação (somente integração visual + clique).
-          Nesta etapa ele apenas dispara a animação manual de comer.
-        -->
         <div class="drop-control">
           <div
             id="dropGainFeedback"
@@ -105,10 +90,6 @@
           </button>
         </div>
 
-        <!--
-          Container reservado para futuras mecânicas (botões, corações, progresso etc.).
-          Mantido vazio propositalmente neste momento.
-        -->
         <div class="ui-layer" aria-hidden="true"></div>
       </div>
     </section>

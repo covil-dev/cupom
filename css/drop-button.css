@@ -1,10 +1,10 @@
 ﻿.drop-control {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  width: clamp(92px, 23.8vw, 121px);
-  height: clamp(92px, 23.8vw, 121px);
-  z-index: 5;
+  left: 10px;
+  bottom: calc(clamp(28px, 4.8%, 72px) + var(--safe-bottom));
+  width: var(--control-size);
+  height: var(--control-size);
+  z-index: 6;
 }
 
 .drop-gain-feedback,
@@ -23,17 +23,15 @@
 
 .drop-balance {
   position: absolute;
-  top: 0;
-  left: 30%;
-  transform: translateX(-50%);
+  top: -4px;
+  left: 50%;
   min-width: 82px;
   min-height: 28px;
   padding: 2px 8px;
   display: grid;
   place-items: center;
-  justify-content: center;
   text-align: center;
-  font-size: clamp(14.49px, 3.15vw, 18.9px);
+  font-size: clamp(14px, 3.8vw, 19px);
   font-weight: 900;
   line-height: 1;
   z-index: 2;
@@ -42,7 +40,7 @@
 
 .drop-gain-feedback {
   position: absolute;
-  top: -20px;
+  top: -26px;
   left: 50%;
   min-width: 72px;
   padding: 2px 8px;
@@ -52,7 +50,6 @@
   font-weight: 900;
   line-height: 1;
   opacity: 0;
-  transform: translateX(-50%);
   pointer-events: none;
 }
 
@@ -64,8 +61,8 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  width: clamp(92px, 23.8vw, 121px);
-  height: clamp(92px, 23.8vw, 121px);
+  width: 100%;
+  height: 100%;
   padding: 0;
   border: 0;
   background: transparent;
@@ -76,10 +73,6 @@
 
 .drop-button.is-charged {
   animation: rewardPulse 1.8s ease-in-out infinite;
-}
-
-.drop-button:hover {
-  transform: scale(1.03);
 }
 
 .drop-button:active {
@@ -102,9 +95,8 @@
 
 .drop-countdown {
   position: absolute;
-  left: 45%;
-  bottom: 20px;
-  transform: translateX(-50%);
+  left: 50%;
+  bottom: 21%;
   min-width: 40px;
   text-align: center;
   font-size: clamp(18px, 4vw, 22px);
@@ -122,6 +114,12 @@
     1px 1px #ffffff;
   z-index: 2;
   pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .drop-button:hover {
+    transform: scale(1.03);
+  }
 }
 
 @keyframes rewardPulse {
@@ -152,3 +150,4 @@
     transform: translateY(-18px) scale(1.05);
   }
 }
+
