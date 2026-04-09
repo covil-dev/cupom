@@ -69,6 +69,7 @@ function bootApp() {
   const feedModule = globalThis.FeedButtonModule;
   const dropModule = globalThis.DropButtonModule;
   const heartsModule = globalThis.HeartsModule;
+  const slotMachineModule = globalThis.SlotMachineModule;
   const FEED_COST = 150;
   const DEFAULT_INITIAL_GLOBAL_RATION_BALANCE = 600;
   const DROP_REWARD_AMOUNT = 150;
@@ -88,7 +89,9 @@ function bootApp() {
     !dropModule ||
     typeof dropModule.createDropButtonController !== "function" ||
     !heartsModule ||
-    typeof heartsModule.createHeartSystem !== "function"
+    typeof heartsModule.createHeartSystem !== "function" ||
+    !slotMachineModule ||
+    typeof slotMachineModule.createSlotMachineController !== "function"
   ) {
     console.error("Modulos principais da aplicacao nao foram carregados.");
     return;
@@ -96,6 +99,7 @@ function bootApp() {
 
   setupSceneReferenceLayout();
 
+  const gameScreen = document.getElementById("gameScreen");
   const dogSprite = document.getElementById("dogSprite");
   const feedButton = document.getElementById("feedButton");
   const globalRationBalance = document.getElementById("globalRationBalance");
@@ -109,6 +113,7 @@ function bootApp() {
   const uiLayer = document.querySelector(".ui-layer");
 
   if (
+    !gameScreen ||
     !dogSprite ||
     !feedButton ||
     !globalRationBalance ||
@@ -189,6 +194,14 @@ function bootApp() {
     rewardBurstLayerElement: uiLayer
   });
 
+  const slotMachineController = slotMachineModule.createSlotMachineController({
+    hostElement: gameScreen,
+    onRewardGranted: (rewardAmount) => {
+      state.globalRationBalance += rewardAmount;
+      renderGlobalRationBalance();
+    }
+  });
+
   function setupFeedStateSync() {
     animator.on("manual-sequence-start", ({ sequenceName }) => {
       if (sequenceName !== "eat" || state.pendingFeedCost < FEED_COST) {
@@ -207,6 +220,7 @@ function bootApp() {
     feedController.mount();
     dropController.mount();
     dropController.startAccumulator();
+    slotMachineController.mount();
   }
 
   function setupDogClick() {
@@ -289,6 +303,8 @@ function bootApp() {
     triggerStand: () => animator.enqueueManual("stand", { priority: true }),
     triggerChokeSpit: () => animator.enqueueManual("chokeSpit"),
     collectDropReward: () => dropController.collectReward(),
+    openSlotMachine: () => slotMachineController.open(),
+    spinSlotMachine: () => slotMachineController.startSpin(),
     getFeedBalance: () => state.globalRationBalance,
     getDropBalance: () => dropController.getBalance(),
     getHeartsStatus: () => heartsController.getStatus(),
