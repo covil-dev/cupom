@@ -3,7 +3,7 @@
   position: absolute;
   left: 50%;
   bottom: 40px;
-  width: clamp(210px, 52%, 340px);
+  width: clamp(252px, 62.4%, 408px);
   transform: translateX(-50%);
   z-index: 4;
 }
