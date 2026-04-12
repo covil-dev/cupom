@@ -1,7 +1,7 @@
 const APP_DEBUG_PRESET = {
   enabled: true,
-  rationBalance: 20000,
-  progressPercent: 100
+  rationBalance: 0,
+  progressPercent: 0
 };
 
 function clampProgressPercent(value) {
@@ -73,7 +73,7 @@ function bootApp() {
   const rewardBurstModule = globalThis.RewardBurstModule;
   const FEED_COST = 150;
   const DEFAULT_INITIAL_GLOBAL_RATION_BALANCE = 600;
-  const DROP_REWARD_AMOUNT = 150;
+  const DROP_REWARD_AMOUNT = 750;
   const DROP_REWARD_INTERVAL_MS = 10000;
   const POST_COMPLETE_HEARTS_TO_CHOKE = 2;
   const DOG_SPIT_RECOVERY_MS = 860;

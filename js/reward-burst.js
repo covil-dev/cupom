@@ -1,5 +1,5 @@
 (() => {
-  const INTERACTION_LOCK_MS = 2000;
+  const INTERACTION_LOCK_MS = 2500;
 
   function createRewardBurstController({ hostElement, iconPath, labelText = "" }) {
     if (!hostElement) {
@@ -99,6 +99,14 @@
       overlayElement.classList.add("is-visible");
     }
 
+    function setIconPath(nextIconPath) {
+      if (typeof nextIconPath !== "string" || nextIconPath.trim().length === 0) {
+        return;
+      }
+
+      itemElement.src = nextIconPath;
+    }
+
     function hide() {
       overlayElement.classList.remove("is-visible");
     }
@@ -128,6 +136,7 @@
     return {
       show,
       hide,
+      setIconPath,
       isVisible,
       onDismiss,
       destroy

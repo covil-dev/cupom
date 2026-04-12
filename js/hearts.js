@@ -102,8 +102,13 @@
           : HEARTS_CONFIG.spawnJitterPattern
     };
     const feedsPerHeart = Math.max(1, Math.round(toFiniteNumber(resolvedConfig.feedsPerHeart, 2)));
-    const rewardMilestones = [60, 80, 100];
-    const rewardBurstIconPath = "./assets/icons/ic-segredo.png";
+    const rewardMilestoneIcons = new Map([
+      [60, "./assets/icons/ic-prato.png"],
+      [80, "./assets/icons/ic-chocolate.png"],
+      [100, "./assets/icons/ic-cupom.png"]
+    ]);
+    const rewardMilestones = Array.from(rewardMilestoneIcons.keys());
+    const defaultRewardBurstIconPath = rewardMilestoneIcons.get(100);
     const rewardBurstModule = globalThis.RewardBurstModule;
 
     const state = {
@@ -114,7 +119,7 @@
       progressMarkers: [],
       reachedMilestones: new Set(),
       rewardBurstController: null,
-      rewardBurstPendingCount: 0
+      rewardBurstPendingMilestones: []
     };
 
     function mount() {
@@ -177,7 +182,7 @@
       state.progressMarkers = [];
       state.reachedMilestones.clear();
       state.rewardBurstController = null;
-      state.rewardBurstPendingCount = 0;
+      state.rewardBurstPendingMilestones = [];
     }
 
     function syncProgressFromUi() {
@@ -213,30 +218,44 @@
       const overlayHost = rewardBurstLayerElement || anchorElement.parentElement || anchorElement;
       const burstController = rewardBurstModule.createRewardBurstController({
         hostElement: overlayHost,
-        iconPath: rewardBurstIconPath
+        iconPath: defaultRewardBurstIconPath
       });
 
       burstController.onDismiss(() => {
-        state.rewardBurstPendingCount = Math.max(0, state.rewardBurstPendingCount - 1);
-
-        if (state.rewardBurstPendingCount > 0) {
-          window.setTimeout(() => {
-            showRewardBurst();
-          }, 60);
+        if (state.rewardBurstPendingMilestones.length === 0) {
+          return;
         }
+
+        window.setTimeout(() => {
+          showNextRewardBurst();
+        }, 60);
       });
 
       state.rewardBurstController = burstController;
     }
 
-    function showRewardBurst() {
+    function showRewardBurst(threshold) {
       setupRewardBurstController();
 
       if (!state.rewardBurstController) {
         return;
       }
 
+      const rewardIconPath =
+        rewardMilestoneIcons.get(threshold) ||
+        defaultRewardBurstIconPath;
+      state.rewardBurstController.setIconPath?.(rewardIconPath);
+
       state.rewardBurstController.show();
+    }
+
+    function showNextRewardBurst() {
+      if (state.rewardBurstPendingMilestones.length === 0) {
+        return;
+      }
+
+      const nextThreshold = state.rewardBurstPendingMilestones.shift();
+      showRewardBurst(nextThreshold);
     }
 
     function renderProgress() {
@@ -273,13 +292,13 @@
         }
 
         state.reachedMilestones.add(threshold);
-        state.rewardBurstPendingCount += 1;
+        state.rewardBurstPendingMilestones.push(threshold);
 
         if (state.rewardBurstController?.isVisible()) {
           return;
         }
 
-        showRewardBurst();
+        showNextRewardBurst();
       });
     }
 

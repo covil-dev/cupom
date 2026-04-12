@@ -1,6 +1,6 @@
 (() => {
   const DEFAULT_SLOT_MACHINE_CONFIG = Object.freeze({
-    rewardAmount: 200,
+    rewardAmount: 600,
     spinDurationMs: 1850,
     reelStopStaggerMs: 260,
     reelTickMs: 95,

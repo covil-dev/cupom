@@ -20,10 +20,10 @@
       throw new Error("Configuracao invalida do botao de recompensa.");
     }
 
-    const REWARD_INTERVAL_STEP_SECONDS = 10;
+    const REWARD_INTERVAL_STEP_SECONDS = 5;
     const REWARD_INTERVAL_LIMIT_SECONDS = 120;
     const REWARD_INTERVAL_RESET_SECONDS = 10;
-    const MAX_DROP_BALANCE = 1000;
+    const MAX_DROP_BALANCE = 6000;
 
     const initialRewardIntervalSeconds = Math.ceil(rewardIntervalMs / 1000);
 
